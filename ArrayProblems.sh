@@ -2,7 +2,6 @@
 
 declare -a RandomList
 counter=0;
-
 for (( i=1; i<=10; i++ ))
 do
     RanNumber=$((RANDOM%1000))
@@ -11,42 +10,32 @@ do
 done
 
 echo ${RandomList[@]}
+echo "Array in original order :"
+echo ${RandomList[*]}
 
-max=${RandomList[0]}
-min=${RandomList[0]}
-
-for i in "${RandomList[@]}"
+for ((i = 0; i<10; i++))
 do
-    if [[ "$i" -gt "$max" ]]; then
-        max="$i"
-    fi
 
-    if [[ "$i" -lt "$min" ]]; then
-        min="$i"
-    fi
+    for((j = 0; j<10-i-1; j++))
+    do
+
+        if [[ "${RandomList[j]}" -gt "${RandomList[$((j+1))]}" ]]
+        then
+
+            temp=${RandomList[j]}
+            RandomList[$j]=${RandomList[$((j+1))]}  
+            RandomList[$((j+1))]=$temp
+        fi
+    done
 done
 
-echo "Max is: $max"
-echo "Min is: $min"
+echo "Array in sorted order :"
+echo ${RandomList[*]}
 
-secondLargest=${RandomList[0]}
-secondSmallest=${RandomList[0]}
+echo "Second Largest Element: ${RandomList[8]}"
+echo "Second Smallest Element: ${RandomList[1]}"
 
-for i in "${RandomList[@]}"
-do
-	if [[ "$i" -lt "$secondSmallest" && "$i" -ne "$min" ]];
-	then
-			secondSmallest="$i"
-	fi
 
-   if [[ "$i" -gt "$secondLargest" && "$i" -ne "$max" ]];
-	then
-			secondLargest="$i"
-	fi
-done
-
-echo "Second Largest: $secondLargest"
-echo "Second Smallest: $secondSmallest"
 
 
 
